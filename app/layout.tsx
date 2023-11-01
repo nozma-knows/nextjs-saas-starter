@@ -1,6 +1,7 @@
 import SupabaseProvider from './supabase-provider';
 import Footer from '@/components/ui/Footer';
 import Navbar from '@/components/ui/Navbar';
+import { ChakraProvider } from '@chakra-ui/react';
 import { PropsWithChildren } from 'react';
 import 'styles/main.css';
 
@@ -48,14 +49,16 @@ export default function RootLayout({
     <html lang="en">
       <body className="bg-black loading">
         <SupabaseProvider>
-          <Navbar />
-          <main
-            id="skip"
-            className="min-h-[calc(100dvh-4rem)] md:min-h[calc(100dvh-5rem)]"
-          >
-            {children}
-          </main>
-          <Footer />
+          <ChakraProvider>
+            <Navbar />
+            <main
+              id="skip"
+              className="min-h-[calc(100dvh-4rem)] md:min-h[calc(100dvh-5rem)]"
+            >
+              {children}
+            </main>
+            <Footer />
+          </ChakraProvider>
         </SupabaseProvider>
       </body>
     </html>
