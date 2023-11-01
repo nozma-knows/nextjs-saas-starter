@@ -1,8 +1,9 @@
-import { getSession } from '@/app/supabase-server';
 import AuthUI from './AuthUI';
-
+import { getSession } from '@/app/supabase-server';
+import logo from '@/assets/logo.png';
+import { Box, Flex, Link, Stack } from '@chakra-ui/react';
+import Image from 'next/image';
 import { redirect } from 'next/navigation';
-import Logo from '@/components/icons/Logo';
 
 export default async function SignIn() {
   const session = await getSession();
@@ -12,13 +13,30 @@ export default async function SignIn() {
   }
 
   return (
-    <div className="flex justify-center height-screen-helper">
-      <div className="flex flex-col justify-between max-w-lg p-3 m-auto w-80 ">
-        <div className="flex justify-center pb-12 ">
-          <Logo width="64px" height="64px" />
-        </div>
+    <Flex w="full" justifyContent={'center'}>
+      <Stack w="full" maxW="lg" gap={8} py={16}>
+        {/* <Link  bg="red" w="fit"> */}
+        <Flex w="full" justify={'center'}>
+          <Link
+            href={'/'}
+            justifyContent={'center'}
+            alignItems={'center'}
+            h="28"
+            aspectRatio={1 / 1}
+            justifySelf={'center'}
+          >
+            <Box w="100%" h="100%" position={'relative'}>
+              <Image
+                src={logo}
+                alt={'Synchronicity Labs Logo'}
+                fill
+                objectFit="contain"
+              />
+            </Box>
+          </Link>
+        </Flex>
         <AuthUI />
-      </div>
-    </div>
+      </Stack>
+    </Flex>
   );
 }
