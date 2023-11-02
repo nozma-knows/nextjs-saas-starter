@@ -76,7 +76,7 @@ const ProfileButton: FC<Props> = ({ user }) => {
   return (
     <Flex className="relative">
       <Flex
-        w={10}
+        w={8}
         aspectRatio={1 / 1}
         justifyContent={'center'}
         alignItems={'center'}
@@ -84,7 +84,7 @@ const ProfileButton: FC<Props> = ({ user }) => {
         bg="whiteAlpha.400"
         cursor={'pointer'}
         onClick={isOpen ? onClose : onOpen}
-        fontSize="2xl"
+        fontSize="xl"
       >
         <MdPerson color="white" />
       </Flex>
