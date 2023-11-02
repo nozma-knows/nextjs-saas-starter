@@ -1,6 +1,6 @@
 'use client';
 
-import SignOutButton from '../Navbar/SignOutButton';
+import SignOutButton from './SignOutButton';
 import {
   Box,
   Flex,

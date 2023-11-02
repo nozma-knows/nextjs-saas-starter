@@ -1,12 +1,11 @@
 'use client';
 
-import Button from './ui/Button';
+import Button from '../Button';
 import { Database } from '@/types_db';
 import { postData } from '@/utils/helpers';
 import { getStripe } from '@/utils/stripe-client';
-import { Box, Divider, Flex, Link, Stack, Text } from '@chakra-ui/react';
+import { Box, Flex, Link, Stack, Text } from '@chakra-ui/react';
 import { Session, User } from '@supabase/supabase-js';
-import cn from 'classnames';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
@@ -42,9 +41,6 @@ const NoProductsView = () => {
         Pricing Plans
       </Text>
       <Box fontSize="6xl" fontWeight="extrabold" textAlign="center">
-        {/* <Text color="white">
-        No subscription pricing plans found. Create them in your{' '}
-      </Text> */}
         <span className="text-white">
           No subscription pricing plans found. Create them in your{' '}
           <Link

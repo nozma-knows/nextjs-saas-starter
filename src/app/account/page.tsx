@@ -4,16 +4,48 @@ import {
   getActiveProductsWithPrices,
   getSubscription
 } from '@/app/supabase-server';
-import Pricing from '@/components/Pricing';
-import Button from '@/components/ui/Button';
-import { Database } from '@/types_db';
+import Pricing from '@/components/ui/Pricing';
 import { Box, Flex, Stack, Text } from '@chakra-ui/react';
-import { createServerActionClient } from '@supabase/auth-helpers-nextjs';
-import { revalidatePath } from 'next/cache';
-import { cookies } from 'next/headers';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { ReactNode } from 'react';
+
+interface Props {
+  title: string;
+  description?: string;
+  footer?: ReactNode;
+  children: ReactNode;
+}
+
+function Card({ title, description, footer, children }: Props) {
+  return (
+    <Stack
+      w="full"
+      maxW="3xl"
+      my={8}
+      rounded={'md'}
+      border={'2px solid'}
+      borderColor="whiteAlpha.400"
+    >
+      <div className="px-5 py-4">
+        <Text fontSize="2xl" fontWeight="md" color="white">
+          {title}
+        </Text>
+        <Text color="gray.50">{description}</Text>
+        {children}
+      </div>
+      <Box
+        p={4}
+        borderTop={'1px solid'}
+        borderColor="whiteAlpha.400"
+        bg="whiteAlpha.200"
+        color="white"
+      >
+        {footer}
+      </Box>
+    </Stack>
+  );
+}
 
 export default async function Account() {
   const [session, products, subscription] = await Promise.all([
@@ -72,42 +104,5 @@ export default async function Account() {
         />
       </Stack>
     </Flex>
-  );
-}
-
-interface Props {
-  title: string;
-  description?: string;
-  footer?: ReactNode;
-  children: ReactNode;
-}
-
-function Card({ title, description, footer, children }: Props) {
-  return (
-    <Stack
-      w="full"
-      maxW="3xl"
-      my={8}
-      rounded={'md'}
-      border={'2px solid'}
-      borderColor="whiteAlpha.400"
-    >
-      <div className="px-5 py-4">
-        <Text fontSize="2xl" fontWeight="md" color="white">
-          {title}
-        </Text>
-        <Text color="gray.50">{description}</Text>
-        {children}
-      </div>
-      <Box
-        p={4}
-        borderTop={'1px solid'}
-        borderColor="whiteAlpha.400"
-        bg="whiteAlpha.200"
-        color="white"
-      >
-        {footer}
-      </Box>
-    </Stack>
   );
 }

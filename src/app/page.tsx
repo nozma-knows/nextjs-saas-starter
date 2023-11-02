@@ -3,9 +3,9 @@ import {
   getSubscription,
   getActiveProductsWithPrices
 } from '@/app/supabase-server';
-import Pricing from '@/components/Pricing';
 import Header from '@/components/feature-home/ui/Header';
 import Instructions from '@/components/feature-home/ui/Intstructions';
+import Pricing from '@/components/ui/Pricing';
 import { Stack } from '@chakra-ui/react';
 
 export default async function PricingPage() {
