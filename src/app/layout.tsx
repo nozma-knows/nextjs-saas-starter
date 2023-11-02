@@ -50,15 +50,17 @@ export default function RootLayout({
       <body className="bg-black loading">
         <SupabaseProvider>
           <ChakraProvider>
-            <Flex direction="column">
-              <Navbar />
-              <Flex w="full" justifyContent={'center'}>
-                <Flex w="full" maxW="6xl">
-                  {children}
+            <Stack justifyContent="space-between" className="min-h-screen">
+              <Flex direction="column">
+                <Navbar />
+                <Flex w="full" justifyContent={'center'}>
+                  <Flex w="full" maxW="6xl">
+                    {children}
+                  </Flex>
                 </Flex>
               </Flex>
-            </Flex>
-            <Footer />
+              <Footer />
+            </Stack>
           </ChakraProvider>
         </SupabaseProvider>
       </body>
