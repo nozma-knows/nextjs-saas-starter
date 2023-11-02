@@ -1,9 +1,6 @@
 import ProfileButton from '../ProfileButton';
-import s from './Navbar.module.css';
-import SignOutButton from './SignOutButton';
 import { createServerSupabaseClient } from '@/app/supabase-server';
 import logo from '@/assets/logo.png';
-// import Logo from '@/components/icons/Logo';
 import { Box, Button, Flex, Text } from '@chakra-ui/react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -25,7 +22,7 @@ export default async function Navbar() {
       py={4}
       px={[4, 4, 4, 8]}
       borderBottom="1px"
-      borderColor="RGBA(255,255,255,0.05)"
+      borderColor="whiteAlpaha.300"
     >
       <Link href={'/'}>
         <Flex
@@ -50,7 +47,9 @@ export default async function Navbar() {
         <ProfileButton user={user} />
       ) : (
         <Button>
-          <Link href="/signin">Sign in</Link>
+          <Link href="/signin" color="white">
+            Sign in
+          </Link>
         </Button>
       )}
     </Flex>
