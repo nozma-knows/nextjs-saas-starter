@@ -4,7 +4,7 @@ import SignOutButton from './SignOutButton';
 import { createServerSupabaseClient } from '@/app/supabase-server';
 import logo from '@/assets/logo.png';
 // import Logo from '@/components/icons/Logo';
-import { Box, Flex } from '@chakra-ui/react';
+import { Box, Button, Flex, Text } from '@chakra-ui/react';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -39,7 +39,9 @@ export default async function Navbar() {
               src={logo}
               alt={'Synchronicity Labs Logo'}
               fill
-              objectFit="contain"
+              style={{
+                objectFit: 'contain'
+              }}
             />
           </Box>
         </Flex>
@@ -47,9 +49,9 @@ export default async function Navbar() {
       {user ? (
         <ProfileButton user={user} />
       ) : (
-        <Link href="/signin" className={s.link}>
-          Sign in
-        </Link>
+        <Button>
+          <Link href="/signin">Sign in</Link>
+        </Button>
       )}
     </Flex>
   );

@@ -162,6 +162,7 @@ export default function Pricing({
       </section>
     );
 
+  // TODO: Update UI below to look better
   return (
     <section className="bg-black">
       <div className="max-w-6xl px-4 py-8 mx-auto sm:py-24 sm:px-6 lg:px-8">
@@ -259,13 +260,23 @@ export default function Pricing({
   );
 }
 
+// TODO: Add Sync labs logo to cloud
 function LogoCloud() {
   return (
     <div>
       <p className="mt-24 text-xs uppercase text-zinc-400 text-center font-bold tracking-[0.3em]">
-        Brought to you by
+        Built using
       </p>
       <div className="flex flex-col items-center my-12 space-y-4 sm:mt-8 sm:space-y-0 md:mx-auto md:max-w-2xl sm:grid sm:gap-6 sm:grid-cols-5">
+        <div className="flex items-center justify-start">
+          <a href="https://synclabs.so" aria-label="Synclabs.so Link">
+            <img
+              src="/synclabs.svg"
+              alt="Next.js Logo"
+              className="h-12 text-white"
+            />
+          </a>
+        </div>
         <div className="flex items-center justify-start">
           <a href="https://nextjs.org" aria-label="Next.js Link">
             <img
@@ -299,15 +310,6 @@ function LogoCloud() {
               src="/supabase.svg"
               alt="supabase.io Logo"
               className="h-10 text-white"
-            />
-          </a>
-        </div>
-        <div className="flex items-center justify-start">
-          <a href="https://github.com" aria-label="github.com Link">
-            <img
-              src="/github.svg"
-              alt="github.com Logo"
-              className="h-8 text-white"
             />
           </a>
         </div>
