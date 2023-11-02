@@ -1,17 +1,10 @@
 'use client';
 
+import Button from './ui/Button';
 import { Database } from '@/types_db';
 import { postData } from '@/utils/helpers';
 import { getStripe } from '@/utils/stripe-client';
-import {
-  Box,
-  Button,
-  Divider,
-  Flex,
-  Link,
-  Stack,
-  Text
-} from '@chakra-ui/react';
+import { Box, Divider, Flex, Link, Stack, Text } from '@chakra-ui/react';
 import { Session, User } from '@supabase/supabase-js';
 import cn from 'classnames';
 import { useRouter } from 'next/navigation';
@@ -112,9 +105,8 @@ export default function Pricing({
   };
 
   if (!products.length) return <NoProductsView />;
-
   return (
-    <Stack px={4} py={8} textAlign="center" alignItems={'center'} gap={4}>
+    <Stack px={4} py={8} textAlign="center" alignItems={'center'} gap={8}>
       <Text
         fontSize={['4xl', '6xl']}
         fontWeight="extrabold"
@@ -123,55 +115,56 @@ export default function Pricing({
       >
         Pricing Plans
       </Text>
-      <Text maxW="2xl" fontSize={['xl', '2xl']} color="gray.50">
-        Start building for free, then add a site plan to go live. Account plans
-        unlock additional features.
-      </Text>
       <Flex w="full" gap={4}>
-        {products.map((product) => {
-          const price = product?.prices?.find(
-            (price) => price.interval === billingInterval
-          );
-          if (!price) return null;
-          const priceString = new Intl.NumberFormat('en-US', {
-            style: 'currency',
-            currency: price.currency!,
-            minimumFractionDigits: 0
-          }).format((price?.unit_amount || 0) / 100);
-          return (
-            <Stack
-              w="full"
-              h="full"
-              bg="blackAlpha.400"
-              border="2px"
-              borderColor="whiteAlpha.400"
-              gap={'4'}
-              p={'4'}
-              rounded={'md'}
-              color="white"
-            >
-              <Flex gap="4">
-                <Text fontSize="xl">{product.name}</Text>
-              </Flex>
-              <Flex alignItems="flex-end" justifyContent={'center'} p={'0'}>
-                <Text fontWeight="bold" fontSize="4xl">
-                  {priceString}
-                </Text>
-                <Text pb="2">{`/${billingInterval}`}</Text>
-              </Flex>
-              {product.description && (
-                <Text textAlign="start">{product.description}</Text>
-              )}
-              <Button
-                isDisabled={!session}
-                isLoading={priceIdLoading === price.id}
-                onClick={() => handleCheckout(price)}
+        {products
+          .sort(
+            (a, b) =>
+              (a.prices[0]?.unit_amount || 0) - (b.prices[0]?.unit_amount || 0)
+          )
+          .map((product) => {
+            const price = product?.prices?.find(
+              (price) => price.interval === billingInterval
+            );
+            if (!price) return null;
+            const priceString = new Intl.NumberFormat('en-US', {
+              style: 'currency',
+              currency: price.currency!,
+              minimumFractionDigits: 0
+            }).format((price?.unit_amount || 0) / 100);
+            return (
+              <Stack
+                w="full"
+                h="full"
+                bg="blackAlpha.400"
+                border="2px"
+                borderColor="whiteAlpha.400"
+                gap={'4'}
+                p={'4'}
+                rounded={'md'}
+                color="white"
               >
-                {subscription ? 'Manage' : 'subscribe'}
-              </Button>
-            </Stack>
-          );
-        })}
+                <Flex gap="4">
+                  <Text fontSize="xl">{product.name}</Text>
+                </Flex>
+                <Flex alignItems="flex-end" justifyContent={'center'} p={'0'}>
+                  <Text fontWeight="bold" fontSize="4xl">
+                    {priceString}
+                  </Text>
+                  <Text pb="2">{`/${billingInterval}`}</Text>
+                </Flex>
+                {product.description && (
+                  <Text textAlign="start">{product.description}</Text>
+                )}
+                <Button
+                  isDisabled={!session}
+                  isLoading={priceIdLoading === price.id}
+                  onClick={() => handleCheckout(price)}
+                >
+                  {subscription ? 'Manage' : 'subscribe'}
+                </Button>
+              </Stack>
+            );
+          })}
       </Flex>
     </Stack>
   );
