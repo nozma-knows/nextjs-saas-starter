@@ -1,9 +1,5 @@
 import LogoCloud from '../LogoCloud';
-import logo from '@/assets/logo.png';
-import GitHub from '@/components/icons/GitHub';
-import Logo from '@/components/icons/Logo';
 import { Box, Flex } from '@chakra-ui/react';
-import Image from 'next/image';
 import Link from 'next/link';
 import { FaGithub } from 'react-icons/fa';
 import { FaXTwitter } from 'react-icons/fa6';
