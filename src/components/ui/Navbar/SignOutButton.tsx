@@ -1,7 +1,7 @@
 'use client';
 
+import Button from '../Button';
 import { useSupabase } from '@/app/supabase-provider';
-import { Button } from '@chakra-ui/react';
 import { useRouter } from 'next/navigation';
 
 export default function SignOutButton() {

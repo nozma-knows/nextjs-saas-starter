@@ -1,7 +1,8 @@
+import Button from '../Button';
 import ProfileButton from '../ProfileButton';
 import { createServerSupabaseClient } from '@/app/supabase-server';
 import logo from '@/assets/logo.png';
-import { Box, Button, Flex, Text } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
 import Image from 'next/image';
 import Link from 'next/link';
 
