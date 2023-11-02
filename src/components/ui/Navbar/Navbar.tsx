@@ -28,7 +28,7 @@ export default async function Navbar() {
         <Flex
           justifyContent={'center'}
           alignItems={'center'}
-          h="12"
+          h="8"
           aspectRatio={1 / 1}
         >
           <Box w="100%" h="100%" position={'relative'}>
