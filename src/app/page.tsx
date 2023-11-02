@@ -16,15 +16,17 @@ export default async function PricingPage() {
   ]);
 
   return (
-    <Stack w="full">
+    <Stack w="full" pb={16}>
       <Header />
       <Instructions />
-      <Pricing
-        session={session}
-        user={session?.user}
-        products={products}
-        subscription={subscription}
-      />
+      {!session?.user && (
+        <Pricing
+          session={session}
+          user={session?.user}
+          products={products}
+          subscription={subscription}
+        />
+      )}
     </Stack>
   );
 }
