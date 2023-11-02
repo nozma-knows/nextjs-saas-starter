@@ -1,17 +1,25 @@
-# Next.js Subscription Payments Starter
+# [Sync Labs](https://synclabs.so) - Next.js SaaS Starter Project
 
-The all-in-one starter kit for high-performance SaaS applications.
+This is a starter project for quickly releasing Open-Source SaaS projects using:
+
+- [Sync Labs](https://synclabs.so)
+- [Next.js](https://nextjs.org)
+- [Vercel](https://vercel.com)
+- [Supabase](https://supabase.io)
+- [Stripe](https://stripe.com)
+
+This project is based off of `Vercel's` [nextjs-subscription-payments](https://github.com/vercel/nextjs-subscription-payments) repo
 
 ## Features
 
-- Secure user management and authentication with [Supabase](https://supabase.io/docs/guides/auth)
-- Powerful data access & management tooling on top of PostgreSQL with [Supabase](https://supabase.io/docs/guides/database)
+- User management and authentication with [Supabase](https://supabase.io/docs/guides/auth)
+- Data access & management tooling on top of PostgreSQL with [Supabase](https://supabase.io/docs/guides/database)
 - Integration with [Stripe Checkout](https://stripe.com/docs/payments/checkout) and the [Stripe customer portal](https://stripe.com/docs/billing/subscriptions/customer-portal)
 - Automatic syncing of pricing plans and subscription statuses via [Stripe webhooks](https://stripe.com/docs/webhooks)
 
 ## Demo
 
-- https://subscription-payments.vercel.app/
+- https://nextjs-saas-starter-ashy.vercel.app/
 
 [![Screenshot of demo](./public/demo.png)](https://subscription-payments.vercel.app/)
 
@@ -29,7 +37,7 @@ When deploying this template, the sequence of steps is important. Follow the ste
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fvercel%2Fnextjs-subscription-payments&env=NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY,STRIPE_SECRET_KEY&envDescription=Enter%20your%20Stripe%20API%20keys.&envLink=https%3A%2F%2Fdashboard.stripe.com%2Fapikeys&project-name=nextjs-subscription-payments&repository-name=nextjs-subscription-payments&integration-ids=oac_VqOgBHqhEoFTPzGkPd7L0iH6&external-id=https%3A%2F%2Fgithub.com%2Fvercel%2Fnextjs-subscription-payments%2Ftree%2Fmain)
 
-The Vercel Deployment will create a new repository with this template on your GitHub account and guide your through a new Supabase project creation. The [Supabase Vercel Deploy Integration](https://vercel.com/integrations/supabase-v2) will set up the necessary Supabase environment variables and run the [SQL migrations](./supabase/migrations/20230530034630_init.sql) to set up the Database schema on your account. You can inspect the created tables in your project's [Table editor](https://app.supabase.com/project/_/editor).
+The Vercel Deployment will create a new repository with this template on your GitHub account and guide you through the creation of a new Supabase project. The [Supabase Vercel Deploy Integration](https://vercel.com/integrations/supabase-v2) will set up the necessary Supabase environment variables and run the [SQL migrations](./supabase/migrations/20230530034630_init.sql) to set up the Database schema on your account. You can inspect the created tables in your project's [Table editor](https://app.supabase.com/project/_/editor).
 
 Should the automatic setup fail, please [create a Supabase account](https://app.supabase.com/projects), and a new project if needed. In your project, navigate to the [SQL editor](https://app.supabase.com/project/_/sql) and select the "Stripe Subscriptions" starter template from the Quick start section.
 
@@ -38,24 +46,6 @@ Should the automatic setup fail, please [create a Supabase account](https://app.
 In your Supabase project, navigate to [auth > URL configuration](https://app.supabase.com/project/_/auth/url-configuration) and set your main production URL (e.g. https://your-deployment-url.vercel.app) as the site url.
 
 Next, in your Vercel deployment settings, add a new **Production** environment variable called `NEXT_PUBLIC_SITE_URL` and set it to the same URL. Make sure to deselect preview and development environments to make sure that preview branches and local development work correctly.
-
-#### [Optional] - Set up redirect wildcards for deploy previews (not needed if you installed via the Deploy Button)
-
-If you've deployed this template via the "Deploy to Vercel" button above, you can skip this step. The Supabase Vercel Integration will have set redirect wildcards for you. You can check this by going to your Supabase [auth settings](https://app.supabase.com/project/_/auth/url-configuration) and you should see a list of redirects under "Redirect URLs".
-
-Otherwise, for auth redirects (email confirmations, magic links, OAuth providers) to work correctly in deploy previews, navigate to the [auth settings](https://app.supabase.com/project/_/auth/url-configuration) and add the following wildcard URL to "Redirect URLs": `https://*-username.vercel.app/**`. You can read more about redirect wildcard patterns in the [docs](https://supabase.com/docs/guides/auth#redirect-urls-and-wildcards).
-
-#### [Optional] - Set up OAuth providers
-
-You can use third-party login providers like GitHub or Google. Refer to the [docs](https://supabase.io/docs/guides/auth#third-party-logins) to learn how to configure these. Once configured, you can add them to the `provider` array of the [`Auth` component](./app/signin/AuthUI.tsx) page.
-
-#### [Maybe Optional] - Set up Supabase environment variables (not needed if you installed via the Deploy Button)
-
-If you've deployed this template via the "Deploy to Vercel" button above, you can skip this step. The Supabase Vercel Integration will have set your environment variables for you. You can check this by going to your Vercel project settings, and clicking on 'Environment variables', there will be a list of environment variables with the Supabase icon displayed next to them.
-
-Otherwise navigate to the [API settings](https://app.supabase.com/project/_/settings/api) and paste them into the Vercel deployment interface. Copy project API keys and paste into the `NEXT_PUBLIC_SUPABASE_ANON_KEY` and `SUPABASE_SERVICE_ROLE_KEY` fields, and copy the project URL and paste to Vercel as `NEXT_PUBLIC_SUPABASE_URL`.
-
-Congrats, this completes the Supabase setup, almost there!
 
 ### Configure Stripe
 
@@ -86,14 +76,15 @@ Stripe Checkout currently supports pricing that bills a predefined amount at a s
 
 For example, you can create business models with different pricing tiers, e.g.:
 
-- Product 1: Hobby
+- Product 1: Starter
   - Price 1: 10 USD per month
-  - Price 2: 100 USD per year
-- Product 2: Freelancer
+  - Description: Perfect for individuals or small teams just starting.
+- Product 2: Creator
   - Price 1: 20 USD per month
-  - Price 2: 200 USD per year
-
-Optionally, to speed up the setup, we have added a [fixtures file](fixtures/stripe-fixtures.json) to bootstrap test product and pricing data in your Stripe account. The [Stripe CLI](https://stripe.com/docs/stripe-cli#install) `fixtures` command executes a series of API requests defined in this JSON file. Simply run `stripe fixtures fixtures/stripe-fixtures.json`.
+  - Description: Ideal for content creators and freelancers looking for high-quality results.
+- Product 3: Developer
+  - Price 1: 40 USD per month
+  - Optimized for professional developers and large teams requiring top-notch quality.
 
 **Important:** Make sure that you've configured your Stripe webhook correctly and redeployed with all needed environment variables.
 
@@ -107,9 +98,9 @@ Optionally, to speed up the setup, we have added a [fixtures file](fixtures/stri
 1. Add the products and prices that you want
 1. Set up the required business information and links
 
-### That's it
+### You're all set!
 
-I know, that was quite a lot to get through, but it's worth it. You're now ready to earn recurring revenue from your customers. 🥳
+You're now ready to earn recurring revenue from your SaaS product! 🥳
 
 ## Develop locally
 
@@ -149,9 +140,6 @@ Running this Stripe command will print a webhook secret (such as, `whsec_***`) t
 In a separate terminal, run the following commands to install dependencies and start the development server:
 
 ```bash
-npm install
-npm run dev
-# or
 yarn
 yarn dev
 ```
