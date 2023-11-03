@@ -146,6 +146,7 @@ export default async function Subscription() {
           fontWeight="extrabold"
           color="white"
           className="sm:text-center"
+          pb={8}
         >
           Subscription
         </Text>
@@ -162,7 +163,6 @@ export default async function Subscription() {
             alignSelf="center"
             fontWeight="semibold"
             fontSize="xl"
-            pt={8}
           >{`You don't have a subscription. Please pick one from the list below.`}</Flex>
         )}
         <Pricing
