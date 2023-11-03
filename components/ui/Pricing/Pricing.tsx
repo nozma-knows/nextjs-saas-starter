@@ -12,6 +12,7 @@ import { useState } from 'react';
 type Subscription = Database['public']['Tables']['subscriptions']['Row'];
 type Product = Database['public']['Tables']['products']['Row'];
 type Price = Database['public']['Tables']['prices']['Row'];
+
 interface ProductWithPrices extends Product {
   prices: Price[];
 }
@@ -83,7 +84,7 @@ export default function Pricing({
       return router.push('/signin');
     }
     if (subscription) {
-      return router.push('/account');
+      return router.push('/subscription');
     }
     try {
       const { sessionId } = await postData({
@@ -102,7 +103,7 @@ export default function Pricing({
 
   if (!products.length) return <NoProductsView />;
   return (
-    <Stack px={4} py={8} textAlign="center" alignItems={'center'} gap={8}>
+    <Stack py={8} textAlign="center" alignItems={'center'} gap={8}>
       <Text
         fontSize={['4xl', '6xl']}
         fontWeight="extrabold"
@@ -111,7 +112,7 @@ export default function Pricing({
       >
         Pricing Plans
       </Text>
-      <Flex w="full" gap={4}>
+      <Flex w="full" gap={4} className="flex-col sm:flex-row">
         {products
           .sort(
             (a, b) =>
