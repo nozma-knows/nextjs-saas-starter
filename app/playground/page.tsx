@@ -1,14 +1,27 @@
-import { Flex, Text } from '@chakra-ui/react';
-import { FC } from 'react';
+import { getSession } from '../supabase-server';
+import { Flex, Stack, Text } from '@chakra-ui/react';
+import { redirect } from 'next/navigation';
 
-interface Props {}
+export default async function Playground() {
+  const session = await getSession();
 
-const Playground: FC<Props> = () => {
+  if (!session) {
+    return redirect('/signin');
+  }
+
   return (
-    <Flex>
-      <Text>Playground</Text>
+    <Flex w="full" px={4} justifyContent={'center'} color="white">
+      <Stack w="full" maxW="4xl" py={8} gap={0}>
+        <Text
+          textAlign={'start'}
+          fontSize={['4xl', '6xl']}
+          fontWeight="extrabold"
+          color="white"
+          className="sm:text-center"
+        >
+          Playground
+        </Text>
+      </Stack>
     </Flex>
   );
-};
-
-export default Playground;
+}
