@@ -42,6 +42,7 @@ export default function Footer() {
       color="white"
     >
       <Flex
+        gap={4}
         fontSize={['xs', 'sm', 'md']}
         className="flex-col sm:flex-row items-center"
       >
