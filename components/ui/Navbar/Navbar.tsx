@@ -1,10 +1,30 @@
 import Button from '../Button';
-import ProfileButton from '../ProfileButton';
+import AuthView from './AuthView';
 import { createServerSupabaseClient } from '@/app/supabase-server';
 import logo from '@/assets/logo.png';
 import { Box, Flex } from '@chakra-ui/react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { FaBook, FaRegWindowMaximize, FaSlack } from 'react-icons/fa';
+
+const pages = [
+  {
+    label: 'Playground',
+    icon: <FaRegWindowMaximize />,
+    route: '/playground'
+  },
+  {
+    label: 'Docs',
+    icon: <FaBook />,
+    route: 'https://docs.synclabs.so/'
+  },
+  {
+    label: 'Slack',
+    icon: <FaSlack />,
+    route:
+      'https://syncbetatesters.slack.com/join/shared_invite/zt-23592cxxg-sTjaMTkk2DO5yUcixzRWZg#/shared-invite/email'
+  }
+];
 
 export default async function Navbar() {
   const supabase = createServerSupabaseClient();
@@ -45,7 +65,7 @@ export default async function Navbar() {
         </Flex>
       </Link>
       {user ? (
-        <ProfileButton user={user} />
+        <AuthView user={user} pages={pages} />
       ) : (
         <Button>
           <Link href="/signin" color="white">

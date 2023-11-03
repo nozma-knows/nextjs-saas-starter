@@ -15,7 +15,8 @@ import {
 import { User } from '@supabase/auth-helpers-nextjs';
 import { useRouter, usePathname } from 'next/navigation';
 import { FC } from 'react';
-import { MdSettings, MdPerson } from 'react-icons/md';
+import { FaDollarSign, FaChartBar } from 'react-icons/fa';
+import { MdPerson } from 'react-icons/md';
 
 interface Props {
   user: User;
@@ -23,9 +24,14 @@ interface Props {
 
 const tabs = [
   {
-    label: 'Account',
-    icon: <MdSettings />,
-    route: '/account'
+    label: 'Subscription',
+    icon: <FaDollarSign />,
+    route: '/subscription'
+  },
+  {
+    label: 'Usage',
+    icon: <FaChartBar />,
+    route: '/usage'
   }
 ];
 
