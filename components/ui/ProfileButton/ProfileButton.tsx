@@ -10,28 +10,61 @@ import {
   Stack,
   useDisclosure,
   Text,
-  Divider
+  Divider,
+  useMediaQuery
 } from '@chakra-ui/react';
 import { User } from '@supabase/auth-helpers-nextjs';
 import { useRouter, usePathname } from 'next/navigation';
 import { FC } from 'react';
-import { FaDollarSign, FaChartBar } from 'react-icons/fa';
+import {
+  FaDollarSign,
+  FaChartBar,
+  FaSlack,
+  FaBook,
+  FaRegWindowMaximize
+} from 'react-icons/fa';
 import { MdPerson } from 'react-icons/md';
 
 interface Props {
   user: User;
 }
 
-const tabs = [
+const tabs: any[] = [
   {
     label: 'Subscription',
     icon: <FaDollarSign />,
-    route: '/subscription'
+    route: '/subscription',
+    showOnMobile: true,
+    showOnWeb: true
   },
   {
     label: 'Usage',
     icon: <FaChartBar />,
-    route: '/usage'
+    route: '/usage',
+    showOnMobile: true,
+    showOnWeb: true
+  },
+  {
+    label: 'Playground',
+    icon: <FaRegWindowMaximize />,
+    route: '/playground',
+    showOnMobile: true,
+    showOnWeb: false
+  },
+  {
+    label: 'Docs',
+    icon: <FaBook />,
+    route: 'https://docs.synclabs.so/',
+    showOnMobile: true,
+    showOnWeb: false
+  },
+  {
+    label: 'Slack',
+    icon: <FaSlack />,
+    route:
+      'https://syncbetatesters.slack.com/join/shared_invite/zt-23592cxxg-sTjaMTkk2DO5yUcixzRWZg#/shared-invite/email',
+    showOnMobile: true,
+    showOnWeb: false
   }
 ];
 
@@ -79,6 +112,11 @@ const Tab = ({
 const ProfileButton: FC<Props> = ({ user }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
+  const [isMobile] = useMediaQuery('(max-width: 479px)', {
+    ssr: true,
+    fallback: false
+  });
+
   return (
     <Flex className="relative">
       <Flex
@@ -116,9 +154,27 @@ const ProfileButton: FC<Props> = ({ user }) => {
                 </Box>
                 <Divider borderColor={'#181818'} border={'10'} />
                 <Stack py="1">
-                  {tabs.map(({ label, icon, route }) => (
-                    <Tab key={label} label={label} icon={icon} route={route} />
-                  ))}
+                  {isMobile
+                    ? tabs
+                        .filter((tab) => tab.showOnMobile)
+                        .map(({ label, icon, route }) => (
+                          <Tab
+                            key={label}
+                            label={label}
+                            icon={icon}
+                            route={route}
+                          />
+                        ))
+                    : tabs
+                        .filter((tab) => tab.showOnWeb)
+                        .map(({ label, icon, route }) => (
+                          <Tab
+                            key={label}
+                            label={label}
+                            icon={icon}
+                            route={route}
+                          />
+                        ))}
                 </Stack>
                 <SignOutButton />
               </Stack>

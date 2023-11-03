@@ -33,7 +33,7 @@ const Instructions: FC<Props> = () => {
         <Stack w="full" gap={8}>
           {steps.map(({ title, description }, index) => {
             return (
-              <Stack key={title} w="full" px={8} gap={8}>
+              <Stack key={title} w="full" px={[0, 0, 8]} gap={8}>
                 <Flex alignItems={'center'} fontWeight="bold" gap={4}>
                   <Flex
                     w="12"
@@ -47,7 +47,7 @@ const Instructions: FC<Props> = () => {
                   </Flex>
                   <Text fontSize="lg">{title}</Text>
                 </Flex>
-                <Stack px={16} gap={8}>
+                <Stack px={[0, 0, 16]} gap={8}>
                   <Box w="full" h={80} bg="whiteAlpha.200" rounded={'md'} />
                   <Text>{description}</Text>
                 </Stack>
