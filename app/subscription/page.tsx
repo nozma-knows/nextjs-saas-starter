@@ -5,44 +5,102 @@ import {
   getSubscription
 } from '@/app/supabase-server';
 import Pricing from '@/components/ui/Pricing';
-import { Box, Flex, Stack, Text } from '@chakra-ui/react';
-import Link from 'next/link';
+import {
+  Badge,
+  Box,
+  Divider,
+  Flex,
+  Progress,
+  Spinner,
+  Stack,
+  Text
+} from '@chakra-ui/react';
+import { Session } from '@supabase/supabase-js';
+import { DateTime } from 'luxon';
 import { redirect } from 'next/navigation';
-import { ReactNode } from 'react';
 
-interface Props {
-  title: string;
-  description?: string;
-  footer?: ReactNode;
-  children: ReactNode;
-}
+type Metadata = { credits: string };
 
-function Card({ title, description, footer, children }: Props) {
+function Details({
+  session,
+  plan,
+  balance,
+  outOf,
+  daysUntilRenewal
+}: {
+  session: Session;
+  plan: string;
+  balance: number;
+  outOf: number;
+  daysUntilRenewal: number;
+}) {
+  const creditsUsed = outOf - balance;
   return (
     <Stack
-      w="full"
-      maxW="3xl"
-      my={8}
+      bg="blackAlpha.400"
+      gap={'4'}
+      p={'4'}
       rounded={'md'}
-      border={'2px solid'}
+      border="2px"
       borderColor="whiteAlpha.400"
     >
-      <div className="px-5 py-4">
-        <Text fontSize="2xl" fontWeight="md" color="white">
-          {title}
+      <Flex justifyContent={'space-between'} alignItems={'center'}>
+        <Text fontWeight={'bold'} fontSize={'xl'} alignItems="center">
+          Subscription Details
         </Text>
-        <Text color="gray.50">{description}</Text>
-        {children}
-      </div>
-      <Box
-        p={4}
-        borderTop={'1px solid'}
-        borderColor="whiteAlpha.400"
-        bg="whiteAlpha.200"
-        color="white"
-      >
-        {footer}
-      </Box>
+        <Flex alignItems={'center'} gap={'4'}>
+          <ManageSubscriptionButton session={session} />
+        </Flex>
+      </Flex>
+      <Divider />
+      <Flex>
+        <Flex w="full" fontSize={'lg'} alignItems="center">
+          Plan
+        </Flex>
+        <Flex w="full">
+          <Flex alignItems="center">
+            <Badge colorScheme="purple">{plan}</Badge>
+          </Flex>
+        </Flex>
+      </Flex>
+      <Divider />
+      <Flex>
+        <Flex w="full" fontSize={'lg'} alignItems="center">
+          Credits Used
+        </Flex>
+        {balance !== null && outOf !== null ? (
+          <Stack w="full">
+            <Text
+              fontWeight="bold"
+              fontSize="lg"
+            >{`${creditsUsed} credits / ${outOf} credits`}</Text>
+            <Flex w="full" alignItems="center">
+              <Progress
+                value={(creditsUsed / outOf) * 100}
+                w="full"
+                rounded="full"
+              />
+            </Flex>
+          </Stack>
+        ) : (
+          <Flex justifyContent={'flex-start'} w="full">
+            <Spinner />
+          </Flex>
+        )}
+      </Flex>
+      <Divider />
+      <Flex>
+        <Flex w="full" fontSize={'lg'} alignItems="center">
+          next billing period starts in
+        </Flex>
+        <Flex w="full">
+          <Text fontSize="lg">
+            {daysUntilRenewal !== 0
+              ? `${daysUntilRenewal} days`
+              : `Billing Today`}
+          </Text>
+        </Flex>
+      </Flex>
     </Stack>
   );
 }
@@ -54,48 +112,59 @@ export default async function Subscription() {
     getSubscription()
   ]);
 
-  const user = session?.user;
-
   if (!session) {
     return redirect('/signin');
   }
 
-  const subscriptionPrice =
-    subscription &&
-    new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: subscription?.prices?.currency!,
-      minimumFractionDigits: 0
-    }).format((subscription?.prices?.unit_amount || 0) / 100);
+  const metadata: Metadata = subscription?.prices?.products
+    ?.metadata as Metadata;
+  const credits = metadata ? Number((metadata.credits as string) || 0) : 0;
+
+  const periodEnd = DateTime.fromISO(subscription?.current_period_end || '');
+  const subscriptionDetails = subscription
+    ? {
+        plan: subscription?.prices?.products?.name,
+        price: new Intl.NumberFormat('en-US', {
+          style: 'currency',
+          currency: subscription?.prices?.currency!,
+          minimumFractionDigits: 0
+        }).format((subscription?.prices?.unit_amount || 0) / 100),
+        daysUntilRenewal: Math.ceil(
+          periodEnd.diff(DateTime.now(), 'days').days
+        ),
+        balance: credits,
+        outOf: credits
+      }
+    : null;
 
   return (
-    <Flex w="full">
-      <Stack w="full" maxW="6xl" px={4} py={8} alignItems={'center'} gap={0}>
+    <Flex w="full" px={4} justifyContent={'center'} color="white">
+      <Stack w="full" maxW="4xl" py={8} gap={0}>
         <Text
+          textAlign={'start'}
           fontSize={['4xl', '6xl']}
           fontWeight="extrabold"
           color="white"
           className="sm:text-center"
         >
-          Account
+          Subscription
         </Text>
-        <Card
-          title="Your Plan"
-          description={
-            subscription
-              ? `You are currently on the ${subscription?.prices?.products?.name} plan.`
-              : 'You are not currently subscribed to any plan.'
-          }
-          footer={<ManageSubscriptionButton session={session} />}
-        >
-          <Box mt={8} mb={4} fontSize="xl" fontWeight="semibold">
-            {subscription ? (
-              <Text color="gray.50">{`${subscriptionPrice}/${subscription?.prices?.interval}`}</Text>
-            ) : (
-              <Link href="/">Choose your plan</Link>
-            )}
-          </Box>
-        </Card>
+        {subscriptionDetails ? (
+          <Details
+            session={session}
+            plan={subscriptionDetails.plan!}
+            balance={subscriptionDetails.balance}
+            outOf={subscriptionDetails.outOf}
+            daysUntilRenewal={subscriptionDetails.daysUntilRenewal}
+          />
+        ) : (
+          <Flex
+            alignSelf="center"
+            fontWeight="semibold"
+            fontSize="xl"
+            pt={8}
+          >{`You don't have a subscription. Please pick one from the list below.`}</Flex>
+        )}
         <Pricing
           session={session}
           user={session?.user}
