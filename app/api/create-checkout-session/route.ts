@@ -1,9 +1,9 @@
-import { cookies, headers } from 'next/headers';
-import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
+import { Database } from '@/types_db';
+import { getURL } from '@/utils/helpers';
 import { stripe } from '@/utils/stripe';
 import { createOrRetrieveCustomer } from '@/utils/supabase-admin';
-import { getURL } from '@/utils/helpers';
-import { Database } from '@/types_db';
+import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
+import { cookies, headers } from 'next/headers';
 
 export async function POST(req: Request) {
   if (req.method === 'POST') {
@@ -12,7 +12,7 @@ export async function POST(req: Request) {
 
     try {
       // 2. Get the user from Supabase auth
-      const supabase = createRouteHandlerClient<Database>({cookies});
+      const supabase = createRouteHandlerClient<Database>({ cookies });
       const {
         data: { user }
       } = await supabase.auth.getUser();
@@ -45,7 +45,7 @@ export async function POST(req: Request) {
             trial_from_plan: true,
             metadata
           },
-          success_url: `${getURL()}/account`,
+          success_url: `${getURL()}/subscription`,
           cancel_url: `${getURL()}/`
         });
       } else if (price.type === 'one_time') {
@@ -64,7 +64,7 @@ export async function POST(req: Request) {
           ],
           mode: 'payment',
           allow_promotion_codes: true,
-          success_url: `${getURL()}/account`,
+          success_url: `${getURL()}/subscription`,
           cancel_url: `${getURL()}/`
         });
       }
