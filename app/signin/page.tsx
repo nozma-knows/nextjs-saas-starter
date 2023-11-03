@@ -9,13 +9,12 @@ export default async function SignIn() {
   const session = await getSession();
 
   if (session) {
-    return redirect('/account');
+    return redirect('/subscription');
   }
 
   return (
     <Flex w="full" justifyContent={'center'}>
       <Stack w="full" maxW="lg" gap={8} py={16}>
-        {/* <Link  bg="red" w="fit"> */}
         <Flex w="full" justify={'center'}>
           <Link
             href={'/'}
